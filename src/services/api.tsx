@@ -2,12 +2,17 @@ import axios from 'axios'
 import { HandlerError } from '../helpers/HandlerError'
 import { UserProfileToken } from '../@types/User'
 
-const api = 'https://api.escuelajs.co/api/v1/auth/'
+const api = 'https://freddy.codesubmit.io/'
 
-export const loginService = async (email: string, password: string) => {
+type PostLoginType = {
+  username: string
+  password: string
+}
+
+export const loginService = async ({ username, password }: PostLoginType) => {
   try {
     const data = await axios.post<UserProfileToken>(`${api}login`, {
-      email,
+      username,
       password
     })
     return data

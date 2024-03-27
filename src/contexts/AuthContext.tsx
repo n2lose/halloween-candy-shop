@@ -2,7 +2,6 @@ import { ReactNode, createContext, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 
 type AuthContextProps = {
-  // eslint-disable-next-line react/require-default-props
   children?: ReactNode
 }
 

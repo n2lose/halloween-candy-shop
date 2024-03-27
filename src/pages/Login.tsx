@@ -8,21 +8,18 @@ import { loginService } from '../services/api'
 function Login() {
   const navigate = useNavigate()
 
-  const { authenticated, setAuthenticated } = useContext(AuthContext)
+  const { setAuthenticated } = useContext(AuthContext)
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
-  console.log('authenticated ===== ', authenticated)
   const handleLogin = async (event: any) => {
     event.preventDefault()
     // handle Login
-    console.log('username === ', username)
-    console.log('password === ', password)
-    await loginService(username, password)
+    await loginService({ username, password })
       .then((res) => {
         if (res) {
-          localStorage.setItem('token', res?.data.access_token)
           toast.success('Login Success')
+          localStorage.setItem('token', res?.data.access_token)
           setAuthenticated(true)
           navigate('/dashboard')
         }

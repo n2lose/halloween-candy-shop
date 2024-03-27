@@ -13,6 +13,11 @@ module.exports = {
     'eslint-config-prettier',
     'prettier'
   ],
+   settings: {
+    react: {
+      version: 'detect'
+    }
+  },
   overrides: [],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -37,7 +42,12 @@ module.exports = {
         printWidth: 120,
         jsxSingleQuote: true
       }
-    ]
+    ],
+    'import/prefer-default-export': ['off' | 'warn' | 'error', { target: 'any' }],
+    "react/function-component-definition": [<enabled>, {
+      "namedComponents": "function-declaration" | "function-expression" | "arrow-function" | Array<"function-declaration" | "function-expression" | "arrow-function">,
+      "unnamedComponents": "function-expression" | "arrow-function" | Array<"function-expression" | "arrow-function">,
+    }],
   },
   ignorePatterns: ['vite.config.ts']
 }

@@ -1,23 +1,30 @@
 import { Routes as Router, Route, Navigate, Outlet } from 'react-router-dom'
 import { useContext } from 'react'
-import Login from '../pages/Login'
-import Dashboard from '../pages/Dashboard'
+import Login from '~/pages/Login'
+import Dashboard from '~/pages/Dashboard/Dashboard'
 import { AuthContext } from '../contexts/AuthContext'
+import Orders from '~/pages/orders/Orders'
+import Layout from '~/pages//Layout'
 
 function ProtectedRoutes() {
   const { authenticated } = useContext(AuthContext)
 
   if (!authenticated) return <Navigate to='/login' replace />
-  return <Outlet />
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  )
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export default function Routers() {
+export default function RootRouters() {
   return (
     <Router>
       <Route path='/login' element={<Login />} />
       <Route element={<ProtectedRoutes />}>
         <Route path='/' element={<Dashboard />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/orders' element={<Orders />} />
       </Route>
     </Router>
   )
