@@ -20,27 +20,23 @@ const initialAuthContextValue: AuthContextInterface = {
 const AuthContext = createContext<AuthContextInterface>(initialAuthContextValue)
 
 function AuthProvider({ children }: AuthContextProps) {
-  const [authenticated, setAuthenticated] = useState(initialAuthContextValue.authenticated)
+  const [authenticated, setAuthenticated] = useState(() => {
+    const tokenOnLocalStorage = localStorage.getItem('token')
+    return !!tokenOnLocalStorage
+  })
   const [token, setToken] = useState<string | null>(null)
 
   useEffect(() => {
-    const tokenOnLocalStorage = localStorage.getItem('access_token')
+    const tokenOnLocalStorage = localStorage.getItem('token')
     if (tokenOnLocalStorage) {
       setToken(tokenOnLocalStorage)
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`
+      axios.defaults.headers.common.Authorization = `Bearer ${tokenOnLocalStorage}`
     }
-  }, [token])
+  }, [])
 
-  const memoizedValue = useMemo(
-    () => ({
-      authenticated,
-      setAuthenticated,
-      token
-    }),
-    [authenticated, token]
-  )
+  const value = useMemo(() => ({ authenticated, setAuthenticated, token }), [authenticated, token, setAuthenticated])
 
-  return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export { AuthContext, AuthProvider }
