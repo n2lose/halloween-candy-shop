@@ -8,7 +8,6 @@ import Layout from '~/pages//Layout'
 
 function ProtectedRoutes() {
   const { authenticated } = useContext(AuthContext)
-  console.log('authenticated ==== ', authenticated)
   if (!authenticated) return <Navigate to='/login' replace />
   return (
     <Layout>

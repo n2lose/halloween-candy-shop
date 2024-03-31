@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import FreddyLogo from '../assets/Freddys_Logo.svg'
 import { AuthContext } from '../contexts/AuthContext'
-import { loginService } from '../services/api'
+import { loginService } from '../services/auth'
 
 function Login() {
   const navigate = useNavigate()
@@ -14,17 +14,22 @@ function Login() {
 
   const handleLogin = async (event: any) => {
     event.preventDefault()
-    // handle Login
-    await loginService({ username, password })
-      .then((res) => {
-        if (res) {
-          toast.success('Login Success')
-          localStorage.setItem('token', res?.data.access_token)
-          setAuthenticated(true)
-          navigate('/dashboard')
-        }
-      })
-      .catch((e) => toast.warning('Login error!', e))
+
+    try {
+      const response = await loginService({ username, password })
+
+      if (response) {
+        const { access_token, refresh_token } = response.data
+        if (access_token) localStorage.setItem('accessToken', access_token)
+        if (refresh_token) localStorage.setItem('refreshToken', refresh_token)
+
+        setAuthenticated(true)
+        toast.success('Login Success')
+        navigate('/dashboard')
+      }
+    } catch (error) {
+      toast.warning('Login error!', (error as any).message)
+    }
   }
 
   return (

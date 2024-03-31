@@ -3,7 +3,6 @@ import { toast } from 'react-toastify'
 
 // eslint-disable-next-line import/prefer-default-export, @typescript-eslint/no-explicit-any
 export const HandlerError = (error: any) => {
-  console.log('error === ', error)
   if (axios.isAxiosError(error)) {
     const errorResponse = error.response
 
